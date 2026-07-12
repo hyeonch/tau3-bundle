@@ -1,6 +1,6 @@
 # τ³ Semantic Judge Rubric v0.1.0
 
-이 문서는 `tau3-semantic-judge-v0.4.0`의 clause-level source of truth다. 표의 applicability는
+이 문서는 `tau3-semantic-judge-v0.5.0`의 clause-level source of truth다. 표의 applicability는
 LLM-routed일 때만 사용하고, outcome은 LLM-routed일 때만 사용한다. deterministic target을 의미적으로
 덮어쓰지 않는다.
 

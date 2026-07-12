@@ -7,7 +7,7 @@
   "required": ["schema_version", "judge_protocol_version", "selection_id", "blind_run_id", "decisions"],
   "properties": {
     "schema_version": {"type": "string", "const": "0.1.0"},
-    "judge_protocol_version": {"type": "string", "const": "tau3-semantic-judge-v0.4.0"},
+    "judge_protocol_version": {"type": "string", "const": "tau3-semantic-judge-v0.5.0"},
     "selection_id": {"type": "string", "pattern": "^validity-[0-9]{3}$"},
     "blind_run_id": {"type": "string", "pattern": "^tau3-blind-[0-9a-f]{16}$"},
     "decisions": {

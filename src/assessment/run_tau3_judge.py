@@ -40,7 +40,7 @@ DEFAULT_PROVENANCE_OUTPUT = Path("results/tau3/assessment/judge_provenance.jsonl
 DEFAULT_EVENT_LOG = Path("results/tau3/assessment/judge_events.jsonl")
 DEFAULT_INVALID_OUTPUT_LOG = Path("results/tau3/assessment/judge_invalid_outputs.jsonl")
 DEFAULT_ENDPOINT = "https://api.openai.com/v1/chat/completions"
-PROTOCOL_VERSION = "tau3-semantic-judge-v0.4.0"
+PROTOCOL_VERSION = "tau3-semantic-judge-v0.5.0"
 
 
 @dataclass(frozen=True)
