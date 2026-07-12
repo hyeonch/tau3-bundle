@@ -6,8 +6,8 @@
   "additionalProperties": false,
   "required": ["schema_version", "judge_protocol_version", "selection_id", "blind_run_id", "decisions"],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
-    "judge_protocol_version": {"const": "tau3-semantic-judge-v0.1.0"},
+    "schema_version": {"type": "string", "const": "0.1.0"},
+    "judge_protocol_version": {"type": "string", "const": "tau3-semantic-judge-v0.4.0"},
     "selection_id": {"type": "string", "pattern": "^validity-[0-9]{3}$"},
     "blind_run_id": {"type": "string", "pattern": "^tau3-blind-[0-9a-f]{16}$"},
     "decisions": {
@@ -25,14 +25,7 @@
         "source": {"type": "string", "enum": ["trajectory_step", "task_context"]},
         "step": {"type": ["integer", "null"], "minimum": 0},
         "quote": {"type": "string", "minLength": 1, "maxLength": 800}
-      },
-      "allOf": [
-        {
-          "if": {"properties": {"source": {"const": "trajectory_step"}}, "required": ["source"]},
-          "then": {"properties": {"step": {"type": "integer", "minimum": 0}}},
-          "else": {"properties": {"step": {"type": "null"}}}
-        }
-      ]
+      }
     },
     "applicability_judgment": {
       "type": "object",
@@ -52,13 +45,7 @@
         "value": {"type": "string", "enum": ["pass", "fail", "unknown"]},
         "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
         "reason": {"type": "string", "minLength": 1, "maxLength": 2000}
-      },
-      "allOf": [
-        {
-          "if": {"properties": {"value": {"enum": ["pass", "fail"]}}, "required": ["value"]},
-          "then": {"properties": {"evidence": {"minItems": 1}}}
-        }
-      ]
+      }
     },
     "decision": {
       "type": "object",

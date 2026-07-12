@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -103,6 +105,8 @@ def validate_judge_output(
                 raise ValueError(f"judge outcome target mismatch after applicability: {clause_id}")
         outcome = decision["outcome"]
         if outcome is not None:
+            if outcome["value"] in {"pass", "fail"} and not outcome["evidence"]:
+                raise ValueError(f"decided judge outcome lacks evidence: {clause_id}")
             validate_evidence_list(outcome["evidence"], case)
 
 
@@ -218,23 +222,47 @@ def validate_evidence_list(evidence: list[dict[str, Any]], case: dict[str, Any])
     for item in evidence:
         quote = item["quote"]
         if item["source"] == "trajectory_step":
+            if not isinstance(item["step"], int):
+                raise ValueError("trajectory_step citation requires an integer step")
             event = events.get(item["step"])
             if event is None:
                 raise ValueError(f"citation references missing trajectory step {item['step']}")
             if not quote_in_source(quote, event):
                 raise ValueError(f"citation quote not found at trajectory step {item['step']}")
-        elif not quote_in_source(quote, case["task_context"]):
-            raise ValueError("citation quote not found in task context")
+        else:
+            if item["step"] is not None:
+                raise ValueError("task_context citation requires a null step")
+            if not quote_in_source(quote, case["task_context"]):
+                raise ValueError("citation quote not found in task context")
 
 
 def quote_in_source(quote: str, source: Any) -> bool:
-    """Accept a raw visible-string quote or canonical structured JSON quote.
+    """Accept exact or display-normalized contiguous source citations.
 
     Tool result content can itself be JSON text. Re-serializing the outer event
     escapes that inner text, so a literal quote copied from visible tool output
-    must be matched against string fields as well as canonical event JSON.
+    must be matched against string fields as well as canonical event JSON. If
+    exact matching fails, display-only Markdown delimiters, quote glyphs, and
+    JSON punctuation are ignored while preserving the ordered word/number token
+    sequence. This accepts ``HAT266`` inside ``**HAT266**`` but not a paraphrase
+    or a reordered/non-contiguous citation.
     """
-    return quote in canonical_text(source) or any(quote in text for text in string_values(source))
+    candidates = [canonical_text(source), *string_values(source)]
+    if any(quote in text for text in candidates):
+        return True
+    quote_tokens = citation_tokens(quote)
+    return bool(quote_tokens) and any(
+        contiguous_tokens(quote_tokens, citation_tokens(text)) for text in candidates
+    )
+
+
+def citation_tokens(text: str) -> list[str]:
+    return re.findall(r"\w+", unicodedata.normalize("NFKC", text).casefold())
+
+
+def contiguous_tokens(needle: list[str], haystack: list[str]) -> bool:
+    width = len(needle)
+    return any(haystack[index:index + width] == needle for index in range(len(haystack) - width + 1))
 
 
 def string_values(value: Any):

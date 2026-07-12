@@ -1,4 +1,4 @@
-# τ³ Semantic Judge Prompt v0.1.0
+# τ³ Semantic Judge Prompt v0.4.0
 
 이 파일은 judge runner가 사용하는 prompt source다. runner는 아래 system block과 user block의
 placeholder만 치환한다. 문구를 수정하면 prompt SHA-256과 protocol 기록을 새로 남긴다.
@@ -55,13 +55,29 @@ Special banking reverse-hybrid citation contract:
 - For these two clauses outcome must be null; a deterministic post-judge resolver checks ordering.
 
 Output JSON only. Do not include markdown, commentary, confidence, chain-of-thought, or fields outside schema.
+
+Required JSON shape examples:
+- If an LLM applicability target is `not_applicable`, `not_triggered`, or `unknown`, write the JSON literal
+  `"outcome": null`. Never create an outcome object whose value is `"not_applicable"` or `"not_triggered"`:
+  those are applicability values, not outcome values.
+- `reason` belongs only inside the `applicability` or `outcome` object. Never add `reason` beside
+  `clause_id`, `applicability`, and `outcome` at the decision level.
+- A decided outcome has exactly `"value"`, `"evidence"`, and `"reason"`; its value is only `"pass"`,
+  `"fail"`, or `"unknown"`.
+- For a citation, copy the shortest literal substring directly from one visible source field. Do not normalize
+  whitespace, add punctuation, paraphrase, or copy JSON escape characters that are not part of the source text.
+- Keep every citation to a short contiguous fragment (normally 1--8 ordinary words or one complete JSON key/value
+  pair). For conversational text, avoid contractions, typographic apostrophes, em dashes, and Markdown delimiters:
+  quote nearby plain words instead. For tool JSON, quote one complete local key/value pair such as
+  `"flight_number": "HAT266"`; never reconstruct an array/object fragment or include brackets, commas, or braces
+  guessed from surrounding JSON.
 ```
 
 ## User block
 
 ```text
 JUDGE_PROTOCOL_VERSION:
-tau3-semantic-judge-v0.1.0
+tau3-semantic-judge-v0.4.0
 
 ROUTING_TARGETS:
 {{ROUTING_TARGETS_JSON}}

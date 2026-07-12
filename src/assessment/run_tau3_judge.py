@@ -7,6 +7,7 @@ large-scale orchestration are handled by separate scripts.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
 import re
@@ -39,7 +40,7 @@ DEFAULT_PROVENANCE_OUTPUT = Path("results/tau3/assessment/judge_provenance.jsonl
 DEFAULT_EVENT_LOG = Path("results/tau3/assessment/judge_events.jsonl")
 DEFAULT_INVALID_OUTPUT_LOG = Path("results/tau3/assessment/judge_invalid_outputs.jsonl")
 DEFAULT_ENDPOINT = "https://api.openai.com/v1/chat/completions"
-PROTOCOL_VERSION = "tau3-semantic-judge-v0.1.0"
+PROTOCOL_VERSION = "tau3-semantic-judge-v0.4.0"
 
 
 @dataclass(frozen=True)
@@ -116,7 +117,9 @@ def main() -> None:
     prompt_source = args.prompt.read_text(encoding="utf-8")
     rubric_source = args.rubric.read_text(encoding="utf-8")
     judge_schema = json.loads(args.judge_schema.read_text(encoding="utf-8"))
-    request_fn = openai_chat_request(args.endpoint, api_key, args.model, args.timeout_sec)
+    request_fn = openai_chat_request(
+        args.endpoint, api_key, args.model, args.timeout_sec, structured_output_schema(judge_schema)
+    )
     events = EventLogger(args.event_log)
     events.emit("run_started", model=args.model, provider=args.provider, case_count=len(cases),
                 repetition_index=args.repetition_index, max_retries=args.max_retries)
@@ -340,16 +343,71 @@ class InvalidOutputLogger:
             file.write(canonical_json(row) + "\n")
 
 
-def openai_chat_request(endpoint: str, api_key: str, model: str, timeout_sec: float) -> Callable[[JudgeRequest], ProviderResponse]:
+def openai_chat_request(
+    endpoint: str, api_key: str, model: str, timeout_sec: float, judge_schema: dict[str, Any],
+) -> Callable[[JudgeRequest], ProviderResponse]:
     def request_fn(request: JudgeRequest) -> ProviderResponse:
-        body = {"model": model, "messages": [{"role": "system", "content": request.system_prompt}, {"role": "user", "content": request.user_prompt}], "response_format": {"type": "json_object"}}
+        body = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": request.system_prompt},
+                {"role": "user", "content": request.user_prompt},
+            ],
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "tau3_judge_output",
+                    "strict": True,
+                    "schema": judge_schema,
+                },
+            },
+        }
         raw = json.dumps(body).encode("utf-8")
         http_request = urllib.request.Request(endpoint, data=raw, headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}, method="POST")
-        with urllib.request.urlopen(http_request, timeout=timeout_sec) as http_response:
-            data = json.loads(http_response.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(http_request, timeout=timeout_sec) as http_response:
+                data = json.loads(http_response.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            detail = error.read().decode("utf-8", errors="replace")
+            raise urllib.error.URLError(f"HTTP {error.code}: {detail}") from error
         usage = data.get("usage") or {}
         return ProviderResponse(data["choices"][0]["message"]["content"], data.get("id"), usage.get("prompt_tokens"), usage.get("completion_tokens"))
     return request_fn
+
+
+def structured_output_schema(judge_schema: dict[str, Any]) -> dict[str, Any]:
+    """Flatten local nullable ``oneOf`` definitions for OpenAI strict output.
+
+    The local JSON Schema intentionally uses ``oneOf`` to express nullable
+    applicability/outcome objects. GPT-5.4 Structured Outputs rejects that
+    keyword, but accepts a nullable object type.  Expand only internal refs,
+    retain the same object properties, and leave the local schema as the
+    authoritative validator after the response arrives.
+    """
+    definitions = judge_schema.get("$defs", {})
+
+    def expand(node: Any) -> Any:
+        if isinstance(node, list):
+            return [expand(item) for item in node]
+        if not isinstance(node, dict):
+            return node
+        if set(node) == {"$ref"} and node["$ref"].startswith("#/$defs/"):
+            name = node["$ref"].split("/")[-1]
+            return expand(copy.deepcopy(definitions[name]))
+        if "oneOf" in node:
+            options = [expand(option) for option in node["oneOf"]]
+            null_options = [option for option in options if option == {"type": "null"}]
+            non_null = [option for option in options if option != {"type": "null"}]
+            if len(null_options) == 1 and len(non_null) == 1:
+                result = non_null[0]
+                current_type = result.get("type", "object")
+                result["type"] = list(current_type) + ["null"] if isinstance(current_type, list) else [current_type, "null"]
+                return result
+            raise ValueError("strict output schema has an unsupported non-nullable oneOf")
+        result = {key: expand(value) for key, value in node.items() if key not in {"$schema", "$id", "$defs"}}
+        return result
+
+    return expand(copy.deepcopy(judge_schema))
 
 
 def parse_json_object(content: str) -> dict[str, Any]:
