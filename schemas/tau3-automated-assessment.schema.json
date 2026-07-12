@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ses.local/schemas/tau3-automated-assessment.schema.json",
+  "title": "SES tau3 Hybrid Automated Assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "protocol_version", "routing_manifest_version", "routing_manifest_sha256", "selection_id", "blind_run_id", "policy_snapshot_id", "policy_snapshot_version", "case_sha256", "execution", "clauses", "summary", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "protocol_version": {"const": "tau3-hybrid-assessment-v0.1.0"},
+    "routing_manifest_version": {"const": "tau3-routing-v0.1.0"},
+    "routing_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "selection_id": {"type": "string", "pattern": "^validity-[0-9]{3}$"},
+    "blind_run_id": {"type": "string", "pattern": "^tau3-blind-[0-9a-f]{16}$"},
+    "policy_snapshot_id": {"type": "string", "minLength": 1},
+    "policy_snapshot_version": {"const": "0.1.0"},
+    "case_sha256": {"$ref": "#/$defs/sha256"},
+    "execution": {"$ref": "#/$defs/execution"},
+    "clauses": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/clause_result"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_linkage_valid", "route_manifest_linkage_valid", "citation_steps_valid"],
+      "properties": {
+        "case_linkage_valid": {"const": true},
+        "route_manifest_linkage_valid": {"const": true},
+        "citation_steps_valid": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "step", "quote"],
+      "properties": {
+        "source": {"type": "string", "enum": ["trajectory_step", "task_context"]},
+        "step": {"type": ["integer", "null"], "minimum": 0},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 800}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"source": {"const": "trajectory_step"}}, "required": ["source"]},
+          "then": {"properties": {"step": {"type": "integer", "minimum": 0}}},
+          "else": {"properties": {"step": {"type": "null"}}}
+        }
+      ]
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "output_tokens", "cost_usd"],
+      "properties": {
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "cost_usd": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "judge_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "model_snapshot", "prompt_sha256", "temperature", "reasoning_effort", "response_id", "repetition_index", "generated_at", "usage"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "model_snapshot": {"type": ["string", "null"]},
+        "prompt_sha256": {"$ref": "#/$defs/sha256"},
+        "temperature": {"type": ["number", "null"], "minimum": 0},
+        "reasoning_effort": {"type": ["string", "null"]},
+        "response_id": {"type": ["string", "null"]},
+        "repetition_index": {"type": "integer", "minimum": 0},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "usage": {"$ref": "#/$defs/usage"}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic_bundle_version", "judge", "retry_count"],
+      "properties": {
+        "deterministic_bundle_version": {"type": "string", "minLength": 1},
+        "judge": {"oneOf": [{"$ref": "#/$defs/judge_execution"}, {"type": "null"}]},
+        "retry_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "provenance", "procedure_id", "evidence", "reason"],
+      "properties": {
+        "value": {"type": "string", "enum": ["applicable", "not_applicable", "not_triggered", "pass", "fail", "unknown", "not_applicable_outcome"]},
+        "provenance": {"type": "string", "enum": ["verified", "inferred", "missing"]},
+        "procedure_id": {"type": "string", "minLength": 1},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "margin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper", "evidence_status"],
+      "properties": {
+        "lower": {"type": "number", "minimum": -1, "maximum": 1},
+        "upper": {"type": "number", "minimum": -1, "maximum": 1},
+        "evidence_status": {"type": "string", "enum": ["verified", "inferred", "missing"]}
+      }
+    },
+    "clause_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clause_id", "clause_type", "assessment_route", "applicability_mode", "outcome_mode", "applicability", "outcome", "margin"],
+      "properties": {
+        "clause_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "clause_type": {"type": "string", "enum": ["goal", "invariant", "triggered_obligation", "resource"]},
+        "assessment_route": {"type": "string", "enum": ["deterministic", "hybrid", "llm_judge", "unknown"]},
+        "applicability_mode": {"type": "string", "enum": ["deterministic", "llm_judge", "unavailable"]},
+        "outcome_mode": {"type": "string", "enum": ["deterministic", "llm_judge", "unavailable"]},
+        "applicability": {"$ref": "#/$defs/decision"},
+        "outcome": {"$ref": "#/$defs/decision"},
+        "margin": {"oneOf": [{"$ref": "#/$defs/margin"}, {"type": "null"}]}
+      }
+    },
+    "certificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper", "status", "bottleneck_clause_ids"],
+      "properties": {
+        "lower": {"type": "number", "minimum": -1, "maximum": 1},
+        "upper": {"type": "number", "minimum": -1, "maximum": 1},
+        "status": {"type": "string", "enum": ["certified_pass", "certified_fail", "unresolved"]},
+        "bottleneck_clause_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "hybrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper", "status", "bottleneck_clause_ids"],
+      "properties": {
+        "lower": {"type": "number", "minimum": -1, "maximum": 1},
+        "upper": {"type": "number", "minimum": -1, "maximum": 1},
+        "status": {"type": "string", "enum": ["hybrid_pass", "hybrid_fail", "unresolved"]},
+        "bottleneck_clause_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_clauses", "deterministic_clauses", "judge_dependent_clauses", "unknown_clauses", "not_applicable_clauses"],
+      "properties": {
+        "total_clauses": {"type": "integer", "minimum": 1},
+        "deterministic_clauses": {"type": "integer", "minimum": 0},
+        "judge_dependent_clauses": {"type": "integer", "minimum": 0},
+        "unknown_clauses": {"type": "integer", "minimum": 0},
+        "not_applicable_clauses": {"type": "integer", "minimum": 0}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic_certificate", "hybrid_assessment", "coverage"],
+      "properties": {
+        "deterministic_certificate": {"$ref": "#/$defs/certificate"},
+        "hybrid_assessment": {"$ref": "#/$defs/hybrid"},
+        "coverage": {"$ref": "#/$defs/coverage"}
+      }
+    }
+  }
+}

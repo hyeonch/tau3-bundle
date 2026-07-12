@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ses.local/schemas/tau3-routing-manifest.schema.json",
+  "title": "SES tau3 Clause/Evidence Routing Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "routing_version", "policy_snapshot_version", "source", "fallback_policy", "summary", "entries"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "routing_version": {"const": "tau3-routing-v0.1.0"},
+    "policy_snapshot_version": {"const": "0.1.0"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_snapshots_path", "policy_snapshots_sha256", "clause_inventory_path", "clause_inventory_sha256", "snapshot_count", "unique_clause_count", "trajectory_outcomes_used", "native_reward_used", "benchmark_review_used"],
+      "properties": {
+        "policy_snapshots_path": {"type": "string", "minLength": 1},
+        "policy_snapshots_sha256": {"$ref": "#/$defs/sha256"},
+        "clause_inventory_path": {"type": "string", "minLength": 1},
+        "clause_inventory_sha256": {"$ref": "#/$defs/sha256"},
+        "snapshot_count": {"type": "integer", "minimum": 1},
+        "unique_clause_count": {"type": "integer", "minimum": 1},
+        "trajectory_outcomes_used": {"const": false},
+        "native_reward_used": {"const": false},
+        "benchmark_review_used": {"const": false}
+      }
+    },
+    "fallback_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missing_required_evidence", "deterministic_parse_failure", "judge_schema_failure", "judge_citation_failure", "deterministic_to_llm_fallback_allowed"],
+      "properties": {
+        "missing_required_evidence": {"const": "unknown"},
+        "deterministic_parse_failure": {"const": "unknown"},
+        "judge_schema_failure": {"const": "unknown"},
+        "judge_citation_failure": {"const": "unknown"},
+        "deterministic_to_llm_fallback_allowed": {"const": false}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessment_routes", "applicability_modes", "outcome_modes"],
+      "properties": {
+        "assessment_routes": {"$ref": "#/$defs/counts"},
+        "applicability_modes": {"$ref": "#/$defs/counts"},
+        "outcome_modes": {"$ref": "#/$defs/counts"}
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/entry"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "route_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "procedure_id", "required_evidence_sources", "missing_evidence_result", "rationale", "parameters"],
+      "properties": {
+        "mode": {"type": "string", "enum": ["deterministic", "llm_judge", "unavailable"]},
+        "procedure_id": {"type": "string", "minLength": 1},
+        "required_evidence_sources": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "missing_evidence_result": {"const": "unknown"},
+        "rationale": {"type": "string", "minLength": 1},
+        "parameters": {"type": "object"}
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clause_id", "clause_type", "policy_applicability", "description", "evidence_sources", "assessment_route", "applicability", "outcome"],
+      "properties": {
+        "clause_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "clause_type": {"type": "string", "enum": ["goal", "invariant", "triggered_obligation", "resource"]},
+        "policy_applicability": {"type": "string", "enum": ["always", "conditional", "triggered"]},
+        "description": {"type": "string", "minLength": 1},
+        "evidence_sources": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "assessment_route": {"type": "string", "enum": ["deterministic", "hybrid", "llm_judge", "unknown"]},
+        "applicability": {"$ref": "#/$defs/route_step"},
+        "outcome": {"$ref": "#/$defs/route_step"}
+      }
+    }
+  }
+}

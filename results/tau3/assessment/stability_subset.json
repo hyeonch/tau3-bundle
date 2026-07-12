@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0.0",
+  "purpose": "frozen 3-repeat LLM-judge stability subset; fixed before any primary judge output",
+  "seed": 20260711,
+  "freeze_date": "2026-07-11",
+  "primary_judge_executed_before_freeze": false,
+  "source": {
+    "task_selection_path": "results/tau3/validation_task_selection.csv",
+    "task_selection_sha256": "06adbcf495d3df3a9e3b49bd77c10451bae54eb5cb3e181913839c7acd942061",
+    "private_key_path": "results/tau3/policy_packet/annotation_packet_private_key.csv",
+    "private_key_sha256": "c07a3a3d789ce9790b32b14eee0d9da9b0796b3f2e6dae82329dbb5688b65a6c",
+    "routing_manifest_path": "results/tau3/assessment/routing_manifest.json",
+    "routing_manifest_sha256": "8b446e98d276b0ba8131f0f0d08bf0ac6e956064c0643d84a3c6c899f562c46e"
+  },
+  "stratification": {
+    "unit": "task_cluster",
+    "axes": [
+      "study_group",
+      "domain",
+      "difficulty_bin",
+      "family"
+    ],
+    "note": "model and trial coverage is inherited from the cluster unit; native reward enters through the frozen difficulty_bin strata of the 100-task selection"
+  },
+  "counts": {
+    "task_clusters": 10,
+    "runs": 96,
+    "task_clusters_by_domain": {
+      "airline": 1,
+      "banking_knowledge": 4,
+      "retail": 3,
+      "telecom": 2
+    },
+    "runs_by_domain": {
+      "airline": 8,
+      "banking_knowledge": 48,
+      "retail": 24,
+      "telecom": 16
+    }
+  },
+  "task_clusters": [
+    {
+      "study_group": "core",
+      "domain": "airline",
+      "task_id": "34",
+      "task_sha256": "29d154a6f123fc33da24ccbfe44a6eb82bbfdd3b31675b242038f66d700dd8ea",
+      "selection_rank": 6,
+      "family": "inquiry_or_refusal",
+      "difficulty_bin": "all_pass",
+      "run_selection_ids": [
+        "validity-041",
+        "validity-042",
+        "validity-043",
+        "validity-044",
+        "validity-045",
+        "validity-046",
+        "validity-047",
+        "validity-048"
+      ]
+    },
+    {
+      "study_group": "banking_knowledge",
+      "domain": "banking_knowledge",
+      "task_id": "task_064",
+      "task_sha256": "d5c5a4dc4d3c2ade1fb0ce53b464f5f1c58e6d0efe26068d7c216c2cb0c33958",
+      "selection_rank": 22,
+      "family": "cross_product",
+      "difficulty_bin": "all_fail",
+      "run_selection_ids": [
+        "validity-589",
+        "validity-590",
+        "validity-591",
+        "validity-592",
+        "validity-593",
+        "validity-594",
+        "validity-595",
+        "validity-596",
+        "validity-597",
+        "validity-598",
+        "validity-599",
+        "validity-600"
+      ]
+    },
+    {
+      "study_group": "banking_knowledge",
+      "domain": "banking_knowledge",
+      "task_id": "task_035",
+      "task_sha256": "d0a739ab65cf3dde2883f2611f641b71f817d1e1572682875c76676c64e0387b",
+      "selection_rank": 41,
+      "family": "credit_card",
+      "difficulty_bin": "all_pass",
+      "run_selection_ids": [
+        "validity-817",
+        "validity-818",
+        "validity-819",
+        "validity-820",
+        "validity-821",
+        "validity-822",
+        "validity-823",
+        "validity-824",
+        "validity-825",
+        "validity-826",
+        "validity-827",
+        "validity-828"
+      ]
+    },
+    {
+      "study_group": "banking_knowledge",
+      "domain": "banking_knowledge",
+      "task_id": "task_073",
+      "task_sha256": "9bfc385839c8276680bb0127bc94c3b976751ade71f76fdac89b93eacbb7f8b2",
+      "selection_rank": 42,
+      "family": "deposit_account",
+      "difficulty_bin": "low_success",
+      "run_selection_ids": [
+        "validity-829",
+        "validity-830",
+        "validity-831",
+        "validity-832",
+        "validity-833",
+        "validity-834",
+        "validity-835",
+        "validity-836",
+        "validity-837",
+        "validity-838",
+        "validity-839",
+        "validity-840"
+      ]
+    },
+    {
+      "study_group": "banking_knowledge",
+      "domain": "banking_knowledge",
+      "task_id": "task_005",
+      "task_sha256": "01ff82b82083291ee735ded8c8e7312e326a633f70443796a05428e2f22613ec",
+      "selection_rank": 52,
+      "family": "profile_support",
+      "difficulty_bin": "high_success",
+      "run_selection_ids": [
+        "validity-949",
+        "validity-950",
+        "validity-951",
+        "validity-952",
+        "validity-953",
+        "validity-954",
+        "validity-955",
+        "validity-956",
+        "validity-957",
+        "validity-958",
+        "validity-959",
+        "validity-960"
+      ]
+    },
+    {
+      "study_group": "core",
+      "domain": "retail",
+      "task_id": "52",
+      "task_sha256": "e16901161ad592cc7ff395c27fbceebc13f19c398a2aa8681ba5fc25cf3374a0",
+      "selection_rank": 57,
+      "family": "exchange",
+      "difficulty_bin": "high_success",
+      "run_selection_ids": [
+        "validity-129",
+        "validity-130",
+        "validity-131",
+        "validity-132",
+        "validity-133",
+        "validity-134",
+        "validity-135",
+        "validity-136"
+      ]
+    },
+    {
+      "study_group": "core",
+      "domain": "retail",
+      "task_id": "55",
+      "task_sha256": "4dca1356bc8700b30824036ec9239678e8ef0c2d893ba19ffb9fd91ec2660d94",
+      "selection_rank": 69,
+      "family": "multi_intent",
+      "difficulty_bin": "all_pass",
+      "run_selection_ids": [
+        "validity-225",
+        "validity-226",
+        "validity-227",
+        "validity-228",
+        "validity-229",
+        "validity-230",
+        "validity-231",
+        "validity-232"
+      ]
+    },
+    {
+      "study_group": "core",
+      "domain": "retail",
+      "task_id": "112",
+      "task_sha256": "6f8facad3889e2e9e89a144d0e0cec3f5d697e47270a8a2b6d611171d9881f99",
+      "selection_rank": 75,
+      "family": "order_modification",
+      "difficulty_bin": "all_fail",
+      "run_selection_ids": [
+        "validity-273",
+        "validity-274",
+        "validity-275",
+        "validity-276",
+        "validity-277",
+        "validity-278",
+        "validity-279",
+        "validity-280"
+      ]
+    },
+    {
+      "study_group": "core",
+      "domain": "telecom",
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "task_sha256": "c44b6bba6e7bec7c32e674a0bb3d1b64d052c4f1849b6db78624b3ad16d854a5",
+      "selection_rank": 77,
+      "family": "mobile_data_issue",
+      "difficulty_bin": "all_pass",
+      "run_selection_ids": [
+        "validity-289",
+        "validity-290",
+        "validity-291",
+        "validity-292",
+        "validity-293",
+        "validity-294",
+        "validity-295",
+        "validity-296"
+      ]
+    },
+    {
+      "study_group": "core",
+      "domain": "telecom",
+      "task_id": "[mms_issue]bad_network_preference|break_app_sms_permission|data_mode_off|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "task_sha256": "8e720360f35fc62c7c46eb130d093d0ee0230f1e2e59cd4683ad292086f68507",
+      "selection_rank": 90,
+      "family": "mms_issue",
+      "difficulty_bin": "high_success",
+      "run_selection_ids": [
+        "validity-393",
+        "validity-394",
+        "validity-395",
+        "validity-396",
+        "validity-397",
+        "validity-398",
+        "validity-399",
+        "validity-400"
+      ]
+    }
+  ]
+}

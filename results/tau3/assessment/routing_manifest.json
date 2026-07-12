@@ -1,0 +1,4117 @@
+{
+  "schema_version": "0.1.0",
+  "routing_version": "tau3-routing-v0.1.0",
+  "policy_snapshot_version": "0.1.0",
+  "source": {
+    "policy_snapshots_path": "results/tau3/policy_packet/task_policy_snapshots.jsonl",
+    "policy_snapshots_sha256": "b023b331056ddce79231f3244b06cc4723922ce2610ba6adc671171831a309de",
+    "clause_inventory_path": "policies/tau3-policy-clause-inventory-v0.md",
+    "clause_inventory_sha256": "b15e141e8fc756cf1e34f6b88d7cc16c4c3f5f0572f3ad878b3ccd8ac87c7d6c",
+    "snapshot_count": 100,
+    "unique_clause_count": 114,
+    "trajectory_outcomes_used": false,
+    "native_reward_used": false,
+    "benchmark_review_used": false
+  },
+  "fallback_policy": {
+    "missing_required_evidence": "unknown",
+    "deterministic_parse_failure": "unknown",
+    "judge_schema_failure": "unknown",
+    "judge_citation_failure": "unknown",
+    "deterministic_to_llm_fallback_allowed": false
+  },
+  "summary": {
+    "assessment_routes": {
+      "deterministic": 59,
+      "hybrid": 12,
+      "llm_judge": 43
+    },
+    "applicability_modes": {
+      "deterministic": 69,
+      "llm_judge": 45
+    },
+    "outcome_modes": {
+      "deterministic": 61,
+      "llm_judge": 53
+    }
+  },
+  "entries": [
+    {
+      "clause_id": "airline.goal.task_outcome",
+      "clause_type": "goal",
+      "policy_applicability": "always",
+      "description": "task source에 명시된 요청, 조건과 수용 가능한 대안을 모두 만족하는 terminal outcome을 달성한다.",
+      "evidence_sources": [
+        "task source",
+        "final state",
+        "tool results",
+        "agent messages"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "task source",
+          "final state",
+          "tool results",
+          "agent messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.invariant.baggage_add_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "checked bag을 제거하지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.baggage_add_only.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.baggage_add_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.baggage_add_only.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.baggage_add_only"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.booking_passenger_limit",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "passenger 수가 5명 이하이다",
+      "evidence_sources": [
+        "final state",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_passenger_limit.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_passenger_limit"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_passenger_limit.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_passenger_limit"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.booking_payment_cardinality",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "certificate ≤1, credit card ≤1, gift card ≤3이다",
+      "evidence_sources": [
+        "final state",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_payment_cardinality.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_payment_cardinality"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_payment_cardinality.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_payment_cardinality"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.booking_shared_itinerary",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "모든 passenger가 같은 flight와 cabin을 이용한다",
+      "evidence_sources": [
+        "final state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_shared_itinerary.applicability.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_shared_itinerary"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_shared_itinerary.outcome.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_shared_itinerary"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.booking_uniform_cabin",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "reservation의 모든 flight cabin class가 같다",
+      "evidence_sources": [
+        "final state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_uniform_cabin.applicability.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_uniform_cabin"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.booking_uniform_cabin.outcome.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.booking_uniform_cabin"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.cancel_eligibility",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "24시간 이내, airline cancellation, business, covered insurance 중 하나가 참이다",
+      "evidence_sources": [
+        "initial state",
+        "tool action"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.cancel_eligibility.applicability.v1",
+        "required_evidence_sources": [
+          "initial state",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.cancel_eligibility"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.cancel_eligibility.outcome.v1",
+        "required_evidence_sources": [
+          "initial state",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.cancel_eligibility"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.cancelled_compensation_amount",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "passenger당 $100 certificate만 제공한다",
+      "evidence_sources": [
+        "state",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.cancelled_compensation_amount.applicability.v1",
+        "required_evidence_sources": [
+          "state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.cancelled_compensation_amount"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.cancelled_compensation_amount.outcome.v1",
+        "required_evidence_sources": [
+          "state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.cancelled_compensation_amount"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.compensation_eligibility",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "silver/gold, insurance, business 중 하나를 충족한다",
+      "evidence_sources": [
+        "profile",
+        "reservation"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.compensation_eligibility.applicability.v1",
+        "required_evidence_sources": [
+          "profile",
+          "reservation"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.compensation_eligibility"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.compensation_eligibility.outcome.v1",
+        "required_evidence_sources": [
+          "profile",
+          "reservation"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.compensation_eligibility"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.delayed_compensation_condition",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "change/cancel 완료 뒤 passenger당 $50 certificate만 제공한다",
+      "evidence_sources": [
+        "action order",
+        "amount"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.delayed_compensation_condition.applicability.v1",
+        "required_evidence_sources": [
+          "action order",
+          "amount"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.delayed_compensation_condition"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.delayed_compensation_condition.outcome.v1",
+        "required_evidence_sources": [
+          "action order",
+          "amount"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.delayed_compensation_condition"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.grounded_response",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "user 또는 tool에 없는 정보·절차·주관적 추천을 만들지 않는다",
+      "evidence_sources": [
+        "message",
+        "tool evidence"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message",
+          "tool evidence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.invariant.modify_route_shape",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "origin, destination, trip type을 바꾸지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.modify_route_shape.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.modify_route_shape"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.modify_route_shape.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.modify_route_shape"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.modify_uniform_cabin",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "모든 segment의 cabin을 함께 같은 class로 변경한다",
+      "evidence_sources": [
+        "final state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.modify_uniform_cabin.applicability.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.modify_uniform_cabin"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.modify_uniform_cabin.outcome.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.modify_uniform_cabin"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_basic_economy_flight_change",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "basic economy flight를 변경하지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_basic_economy_flight_change.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_basic_economy_flight_change"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_basic_economy_flight_change.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_basic_economy_flight_change"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_cabin_change_after_flown",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "이미 flown segment가 있으면 cabin을 변경하지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_cabin_change_after_flown.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_cabin_change_after_flown"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_cabin_change_after_flown.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_cabin_change_after_flown"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_other_compensation_reason",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "cancelled/delayed 정책 이외 이유로 보상하지 않는다",
+      "evidence_sources": [
+        "action",
+        "scenario"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "scenario"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "scenario"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_postbooking_insurance",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "initial booking 뒤 insurance를 추가하지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_postbooking_insurance.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_postbooking_insurance"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.no_postbooking_insurance.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.no_postbooking_insurance"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_proactive_compensation",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "먼저 compensation을 제안하지 않는다",
+      "evidence_sources": [
+        "dialogue"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.invariant.no_unrequested_baggage",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "사용자가 필요로 하지 않은 checked bag을 추가하지 않는다",
+      "evidence_sources": [
+        "dialogue",
+        "final state"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.invariant.passenger_count_immutable",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "passenger 수를 변경하지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.passenger_count_immutable.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.passenger_count_immutable"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.passenger_count_immutable.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.passenger_count_immutable"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.profile_payment_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "user profile에 존재하는 payment method만 사용한다",
+      "evidence_sources": [
+        "profile",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.profile_payment_only.applicability.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.profile_payment_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.profile_payment_only.outcome.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.profile_payment_only"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.refund_original_methods",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "원 payment method로만 환불한다",
+      "evidence_sources": [
+        "final state",
+        "payment"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.refund_original_methods.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "payment"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.refund_original_methods"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.refund_original_methods.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "payment"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.invariant.refund_original_methods"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.invariant.single_tool_turn",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "한 turn에 tool call은 하나만 하고 message와 동시에 내지 않는다",
+      "evidence_sources": [
+        "message sequence"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.invariant.single_tool_turn.outcome.v1",
+        "required_evidence_sources": [
+          "message sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "max_tool_calls_per_assistant_event": 1,
+          "allow_content_with_tool_call": false
+        }
+      }
+    },
+    {
+      "clause_id": "airline.obligation.booking_passenger_identity",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "각 passenger의 이름과 생년월일을 확보한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.booking_trip_fields",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "trip type, origin, destination을 확보한다",
+      "evidence_sources": [
+        "dialogue"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.booking_user_id",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "booking 절차 전에 user id를 사용자에게서 받는다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.cancel_identify_and_reason",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "user id, reservation id와 허용된 cancellation reason을 확보한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.confirm_before_write",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "변경 세부사항을 열거하고 명시적 yes를 받은 뒤 write한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.deny_disallowed_request",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "요청을 실행하지 않고 거절한다",
+      "evidence_sources": [
+        "action",
+        "message"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.flight_change_payment_method",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "profile의 단일 gift card 또는 credit card를 결제/환불 수단으로 받는다",
+      "evidence_sources": [
+        "profile",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.flight_change_payment_method.applicability.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.flight_change_payment_method"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.flight_change_payment_method.outcome.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.flight_change_payment_method"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.obligation.modify_identify_reservation",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "user id와 reservation id를 확보하고, 모르면 tool로 찾는다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.offer_insurance",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "travel insurance 구매 의사를 묻는다",
+      "evidence_sources": [
+        "dialogue"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.settle_cabin_price_difference",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "인상분을 결제하거나 인하분을 환불한다",
+      "evidence_sources": [
+        "payment action",
+        "state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.settle_cabin_price_difference.applicability.v1",
+        "required_evidence_sources": [
+          "payment action",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.settle_cabin_price_difference"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.settle_cabin_price_difference.outcome.v1",
+        "required_evidence_sources": [
+          "payment action",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.settle_cabin_price_difference"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.obligation.transfer_if_partly_flown",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "직접 취소하지 않고 transfer한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.transfer_if_partly_flown.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.transfer_if_partly_flown"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.transfer_if_partly_flown.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "airline.obligation.transfer_if_partly_flown"
+        }
+      }
+    },
+    {
+      "clause_id": "airline.obligation.transfer_only_out_of_scope",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "범위 안 요청은 transfer하지 않고 범위 밖 요청만 transfer한다",
+      "evidence_sources": [
+        "action",
+        "task scope"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "task scope"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "task scope"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "airline.obligation.transfer_sequence",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "transfer tool 뒤에 지정된 transfer message를 보낸다",
+      "evidence_sources": [
+        "message order",
+        "tool"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.transfer_sequence.applicability.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.airline.obligation.transfer_sequence.outcome.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      }
+    },
+    {
+      "clause_id": "airline.obligation.verify_compensation_facts",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "제안 전에 reservation 사실을 확인한다",
+      "evidence_sources": [
+        "message order",
+        "tool"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.agent_tool_kb_authorized",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "KB가 명시하고 실제 사용할 exact tool만 unlock한다",
+      "evidence_sources": [
+        "retrieval",
+        "tool action"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "retrieval",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "retrieval",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.authentication_two_factors",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "DOB, email, phone, address 중 정확한 2개 이상을 받는다",
+      "evidence_sources": [
+        "dialogue",
+        "profile"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "profile"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "profile"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.kb_grounded_response",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "policy 또는 KB에서 찾은 정보·action만 제공하고 없으면 없다고 알린다",
+      "evidence_sources": [
+        "message",
+        "retrieval"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message",
+          "retrieval"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.no_internal_intermediate_leak",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "내부 Rho-Bank 정보나 policy를 드러내는 중간 응답을 하지 않는다",
+      "evidence_sources": [
+        "messages"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.no_preverification_leak",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "customer 정보를 공개하지 않는다",
+      "evidence_sources": [
+        "messages",
+        "tool results"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "messages",
+          "tool results"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "messages",
+          "tool results"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.no_redundant_verification",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "같은 conversation에서 다시 verification을 요구하지 않는다",
+      "evidence_sources": [
+        "dialogue"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.no_unsupported_documents",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "KB에 처리 절차와 권한이 명시되지 않으면 문서를 요구하지 않는다",
+      "evidence_sources": [
+        "dialogue",
+        "retrieval"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "retrieval"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "retrieval"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.invariant.user_tool_kb_authorized",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "KB가 명시한 exact tool이고 user가 해당 action을 원할 때만 제공한다",
+      "evidence_sources": [
+        "retrieval",
+        "tool action"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "retrieval",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "retrieval",
+          "tool action"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.obligation.ask_before_transfer",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "가능한 action이 없음을 확인하고 transfer 의사를 물은 뒤 실행한다",
+      "evidence_sources": [
+        "action",
+        "dialogue",
+        "retrieval"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "dialogue",
+          "retrieval"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "dialogue",
+          "retrieval"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.obligation.authenticate_when_needed",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "접근 전에 identity를 한 번 검증한다",
+      "evidence_sources": [
+        "action order",
+        "tool"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.obligation.current_time_tool",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "추정하지 않고 current-time tool을 사용한다",
+      "evidence_sources": [
+        "message",
+        "tool order"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "message",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.banking.obligation.current_time_tool.outcome.v1",
+        "required_evidence_sources": [
+          "message",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "required_tool": "get_current_time",
+          "required_order": "tool_before_time_claim"
+        }
+      }
+    },
+    {
+      "clause_id": "banking.obligation.log_verification",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "verification logging tool을 호출한다",
+      "evidence_sources": [
+        "tool sequence"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "tool sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.banking.obligation.log_verification.outcome.v1",
+        "required_evidence_sources": [
+          "tool sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "required_tool": "log_verification"
+        }
+      }
+    },
+    {
+      "clause_id": "banking.obligation.try_capability_before_transfer",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "직접 도움을 먼저 제공하고 네 번째 요청에서 transfer를 허용한다",
+      "evidence_sources": [
+        "action",
+        "dialogue"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking.obligation.unlock_before_agent_call",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "exact name으로 unlock한 뒤 call한다",
+      "evidence_sources": [
+        "tool order"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.banking.obligation.unlock_before_agent_call.applicability.v1",
+        "required_evidence_sources": [
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "unlock_tool": "unlock_discoverable_agent_tool",
+          "call_tool": "call_discoverable_agent_tool",
+          "matching_argument": "agent_tool_name",
+          "required_order": "unlock_before_call"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.banking.obligation.unlock_before_agent_call.outcome.v1",
+        "required_evidence_sources": [
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "unlock_tool": "unlock_discoverable_agent_tool",
+          "call_tool": "call_discoverable_agent_tool",
+          "matching_argument": "agent_tool_name",
+          "required_order": "unlock_before_call"
+        }
+      }
+    },
+    {
+      "clause_id": "banking.obligation.user_tool_give_and_explain",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "give tool을 호출하고 기능·사용법·arguments를 설명한다",
+      "evidence_sources": [
+        "message",
+        "tool"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "message",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "banking_knowledge.goal.task_outcome",
+      "clause_type": "goal",
+      "policy_applicability": "always",
+      "description": "task source에 명시된 요청, 조건과 수용 가능한 대안을 모두 만족하는 terminal outcome을 달성한다.",
+      "evidence_sources": [
+        "task source",
+        "final state",
+        "tool results",
+        "agent messages"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "task source",
+          "final state",
+          "tool results",
+          "agent messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.goal.task_outcome",
+      "clause_type": "goal",
+      "policy_applicability": "always",
+      "description": "task source에 명시된 요청, 조건과 수용 가능한 대안을 모두 만족하는 terminal outcome을 달성한다.",
+      "evidence_sources": [
+        "task source",
+        "final state",
+        "tool results",
+        "agent messages"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "task source",
+          "final state",
+          "tool results",
+          "agent messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.invariant.actionable_order_status",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "pending 또는 delivered order에만 허용 action을 수행한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.actionable_order_status.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.actionable_order_status"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.actionable_order_status.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.actionable_order_status"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.cancel_pending_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 pending인 order만 취소한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.cancel_pending_only.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.cancel_pending_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.cancel_pending_only.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.cancel_pending_only"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.cancel_refund_route",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "원 payment method로 정책상 시점에 환불한다",
+      "evidence_sources": [
+        "final state",
+        "payment"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.cancel_refund_route.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "payment"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.cancel_refund_route"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.cancel_refund_route.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "payment"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.cancel_refund_route"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.exchange_delivered_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 delivered인 order만 exchange한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.exchange_delivered_only.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.exchange_delivered_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.exchange_delivered_only.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.exchange_delivered_only"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.exchange_terminal_state",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 `exchange requested`가 되고 안내 email이 생성되며 새 order를 만들지 않는다",
+      "evidence_sources": [
+        "final state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.exchange_terminal_state.applicability.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.exchange_terminal_state"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.exchange_terminal_state.outcome.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.exchange_terminal_state"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.gift_card_balance",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "total 또는 price difference를 충당할 balance가 있을 때만 사용한다",
+      "evidence_sources": [
+        "amount",
+        "profile"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.gift_card_balance.applicability.v1",
+        "required_evidence_sources": [
+          "amount",
+          "profile"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.gift_card_balance"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.gift_card_balance.outcome.v1",
+        "required_evidence_sources": [
+          "amount",
+          "profile"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.gift_card_balance"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.grounded_response",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "user 또는 tool에 없는 정보·절차·주관적 추천을 만들지 않는다",
+      "evidence_sources": [
+        "message",
+        "tool evidence"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message",
+          "tool evidence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.invariant.modify_allowed_fields_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "address, payment, item option 이외 항목을 바꾸지 않는다",
+      "evidence_sources": [
+        "final state",
+        "initial"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_allowed_fields_only.applicability.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_allowed_fields_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_allowed_fields_only.outcome.v1",
+        "required_evidence_sources": [
+          "final state",
+          "initial"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_allowed_fields_only"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.modify_pending_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 pending인 order만 수정한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_pending_only.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_pending_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_pending_only.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_pending_only"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.modify_single_new_payment",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "원 결제수단과 다른 단일 payment method로만 변경한다",
+      "evidence_sources": [
+        "initial state",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_single_new_payment.applicability.v1",
+        "required_evidence_sources": [
+          "initial state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_single_new_payment"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.modify_single_new_payment.outcome.v1",
+        "required_evidence_sources": [
+          "initial state",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.modify_single_new_payment"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.return_delivered_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 delivered인 order만 return한다",
+      "evidence_sources": [
+        "action",
+        "initial state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_delivered_only.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_delivered_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_delivered_only.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "initial state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_delivered_only"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.return_refund_method",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "original method 또는 existing gift card로만 환불한다",
+      "evidence_sources": [
+        "profile",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_refund_method.applicability.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_refund_method"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_refund_method.outcome.v1",
+        "required_evidence_sources": [
+          "profile",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_refund_method"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.return_terminal_state",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "status가 `return requested`가 되고 안내 email이 생성된다",
+      "evidence_sources": [
+        "final state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_terminal_state.applicability.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_terminal_state"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.return_terminal_state.outcome.v1",
+        "required_evidence_sources": [
+          "final state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.return_terminal_state"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.same_product_available_variant",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "같은 product의 available하고 다른 option인 item으로만 바꾼다",
+      "evidence_sources": [
+        "product data",
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.same_product_available_variant.applicability.v1",
+        "required_evidence_sources": [
+          "product data",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.same_product_available_variant"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.same_product_available_variant.outcome.v1",
+        "required_evidence_sources": [
+          "product data",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.same_product_available_variant"
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.single_bulk_mutation_call",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "order당 해당 mutation tool을 한 번만 호출하고 대상 item을 한 호출에 모은다",
+      "evidence_sources": [
+        "args",
+        "tool sequence"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.single_bulk_mutation_call.applicability.v1",
+        "required_evidence_sources": [
+          "args",
+          "tool sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "retail.invariant.single_bulk_mutation_call"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "args",
+          "tool sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.invariant.single_tool_turn",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "한 turn에 tool call은 하나만 하고 message와 동시에 내지 않는다",
+      "evidence_sources": [
+        "message sequence"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.invariant.single_tool_turn.outcome.v1",
+        "required_evidence_sources": [
+          "message sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "max_tool_calls_per_assistant_event": 1,
+          "allow_content_with_tool_call": false
+        }
+      }
+    },
+    {
+      "clause_id": "retail.invariant.single_user_scope",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "한 conversation에서 한 user의 요청만 처리한다",
+      "evidence_sources": [
+        "action target",
+        "dialogue"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action target",
+          "dialogue"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.authenticate_first",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "email 또는 name+zip으로 user id를 찾아 인증한 뒤 정보/행동을 제공한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.cancel_order_and_reason",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "order id와 `no longer needed` 또는 `ordered by mistake` 이유를 확인한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.collect_all_exchange_items",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "모든 exchange item을 제공했는지 확인하도록 알린다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.collect_all_modified_items",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "모든 변경 item을 확인하도록 알리고 한 번에 확정한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.confirm_before_write",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "변경 세부사항을 열거하고 명시적 yes를 받은 뒤 write한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.deny_disallowed_request",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "요청을 실행하지 않고 거절한다",
+      "evidence_sources": [
+        "action",
+        "message"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.item_price_difference_method",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "차액 결제/환불 payment method를 확보한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.return_order_items",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "order id와 return item 전체를 확인한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.transfer_only_out_of_scope",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "범위 안 요청은 transfer하지 않고 범위 밖 요청만 transfer한다",
+      "evidence_sources": [
+        "action",
+        "task scope"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "task scope"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "task scope"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "retail.obligation.transfer_sequence",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "transfer tool 뒤에 지정된 transfer message를 보낸다",
+      "evidence_sources": [
+        "message order",
+        "tool"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.obligation.transfer_sequence.applicability.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.retail.obligation.transfer_sequence.outcome.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.goal.task_outcome",
+      "clause_type": "goal",
+      "policy_applicability": "always",
+      "description": "task source에 명시된 요청, 조건과 수용 가능한 대안을 모두 만족하는 terminal outcome을 달성한다.",
+      "evidence_sources": [
+        "task source",
+        "final state",
+        "tool results",
+        "agent messages"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "task source",
+          "final state",
+          "tool results",
+          "agent messages"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.grounded_response",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "user 또는 tool에 없는 정보·절차·주관적 추천을 만들지 않는다",
+      "evidence_sources": [
+        "message",
+        "tool evidence"
+      ],
+      "assessment_route": "hybrid",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message",
+          "tool evidence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.no_resume_expired_contract",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "contract end date가 지났으면 resume하지 않는다",
+      "evidence_sources": [
+        "action",
+        "line"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.no_resume_expired_contract.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "line"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.no_resume_expired_contract"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.no_resume_expired_contract.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "line"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.no_resume_expired_contract"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.one_awaiting_payment",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "customer에게 awaiting-payment bill이 동시에 하나만 존재한다",
+      "evidence_sources": [
+        "action",
+        "state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.one_awaiting_payment.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.one_awaiting_payment"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.one_awaiting_payment.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.one_awaiting_payment"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.overdue_payment_only",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "bill status가 overdue일 때만 payment request를 보낸다",
+      "evidence_sources": [
+        "action",
+        "bill state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.overdue_payment_only.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "bill state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.overdue_payment_only"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.overdue_payment_only.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "bill state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.overdue_payment_only"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.refuel_max_2gb",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "refuel amount가 2GB 이하이다",
+      "evidence_sources": [
+        "tool args"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.refuel_max_2gb.applicability.v1",
+        "required_evidence_sources": [
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "refuel_data",
+          "argument": "gb_amount",
+          "maximum": 2
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.refuel_max_2gb.outcome.v1",
+        "required_evidence_sources": [
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "refuel_data",
+          "argument": "gb_amount",
+          "maximum": 2
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.refuel_target_line",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "사용자가 제공한 phone number의 line에 적용한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool args"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool args"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.resume_after_all_overdue_paid",
+      "clause_type": "invariant",
+      "policy_applicability": "conditional",
+      "description": "모든 overdue bill이 paid일 때만 suspension을 해제한다",
+      "evidence_sources": [
+        "action",
+        "bills"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.resume_after_all_overdue_paid.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "bills"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.resume_after_all_overdue_paid"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.resume_after_all_overdue_paid.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "bills"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.invariant.resume_after_all_overdue_paid"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.invariant.single_tool_turn",
+      "clause_type": "invariant",
+      "policy_applicability": "always",
+      "description": "한 turn에 tool call은 하나만 하고 message와 동시에 내지 않는다",
+      "evidence_sources": [
+        "message sequence"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "ses.constant_applicable.v1",
+        "required_evidence_sources": [],
+        "missing_evidence_result": "unknown",
+        "rationale": "policy snapshot marks the clause as always applicable",
+        "parameters": {
+          "value": "applicable"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.invariant.single_tool_turn.outcome.v1",
+        "required_evidence_sources": [
+          "message sequence"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "max_tool_calls_per_assistant_event": 1,
+          "allow_content_with_tool_call": false
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.confirm_bill_amount",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "request 전에 amount due를 확인한다",
+      "evidence_sources": [
+        "action order",
+        "tool"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.confirm_bill_amount.applicability.v1",
+        "required_evidence_sources": [
+          "action order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.confirm_bill_amount"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.confirm_bill_amount.outcome.v1",
+        "required_evidence_sources": [
+          "action order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.confirm_bill_amount"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.deny_disallowed_request",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "요청을 실행하지 않고 거절한다",
+      "evidence_sources": [
+        "action",
+        "message"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.disable_airplane_mode",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "user에게 airplane mode off action을 수행하게 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_airplane_mode.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_airplane_mode"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_airplane_mode.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_airplane_mode"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.disable_data_saver",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "data saver를 끄도록 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_data_saver.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_data_saver"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_data_saver.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_data_saver"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.disable_wifi_calling_for_mms",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "Wi-Fi calling을 끄도록 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_wifi_calling_for_mms.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_wifi_calling_for_mms"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.disable_wifi_calling_for_mms.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.disable_wifi_calling_for_mms"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.disconnect_poor_vpn",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "VPN을 disconnect하도록 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.enable_account_roaming",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "해당 line의 roaming을 무료로 enable한다",
+      "evidence_sources": [
+        "action",
+        "line state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_account_roaming.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "line state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_account_roaming"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_account_roaming.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "line state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_account_roaming"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.enable_device_roaming",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "device roaming을 켜도록 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_device_roaming.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_device_roaming"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_device_roaming.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_device_roaming"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.enable_mobile_data",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "mobile data를 켜도록 한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_mobile_data.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_mobile_data"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.enable_mobile_data.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.enable_mobile_data"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.escalate_locked_sim",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "SIM security를 technical support로 escalate한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.escalate_locked_sim.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.escalate_locked_sim"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.escalate_locked_sim.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.escalate_locked_sim"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.grant_mms_permissions",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "messaging app에 storage와 SMS permission을 부여한다",
+      "evidence_sources": [
+        "actions",
+        "app state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.grant_mms_permissions.applicability.v1",
+        "required_evidence_sources": [
+          "actions",
+          "app state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.grant_mms_permissions"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.grant_mms_permissions.outcome.v1",
+        "required_evidence_sources": [
+          "actions",
+          "app state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.grant_mms_permissions"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.handle_suspended_line",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "suspension policy로 복구하고 확인하거나 복구 불가 시 escalate한다",
+      "evidence_sources": [
+        "action sequence",
+        "line"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action sequence",
+          "line"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action sequence",
+          "line"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.identify_customer",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "troubleshooting 전에 customer를 식별한다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.reboot_after_resume",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "service 복구를 위해 reboot를 안내한다",
+      "evidence_sources": [
+        "action",
+        "message"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "action",
+          "message"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.refuel_amount_and_price",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "amount를 묻고 plan 단가로 계산한 가격을 확인받는다",
+      "evidence_sources": [
+        "dialogue",
+        "tool order"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "dialogue",
+          "tool order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.refuel_exhausted_data",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "data refuel policy를 적용한다",
+      "evidence_sources": [
+        "action",
+        "line state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.refuel_exhausted_data.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "line state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.refuel_exhausted_data"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.refuel_exhausted_data.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "line state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.refuel_exhausted_data"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.reseat_missing_sim",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "SIM reseat action을 안내한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.reseat_missing_sim.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.reseat_missing_sim"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.reseat_missing_sim.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.reseat_missing_sim"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.reset_apn_then_reboot",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "APN reset 뒤 reboot하도록 한다",
+      "evidence_sources": [
+        "device action order"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.reset_apn_then_reboot.applicability.v1",
+        "required_evidence_sources": [
+          "device action order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.reset_apn_then_reboot"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.reset_apn_then_reboot.outcome.v1",
+        "required_evidence_sources": [
+          "device action order"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.reset_apn_then_reboot"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.restore_service_before_data",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "mobile data/MMS 절차 전에 cellular service를 복구한다",
+      "evidence_sources": [
+        "action order",
+        "state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.restore_service_before_data.applicability.v1",
+        "required_evidence_sources": [
+          "action order",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.restore_service_before_data"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.restore_service_before_data.outcome.v1",
+        "required_evidence_sources": [
+          "action order",
+          "state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.restore_service_before_data"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.transfer_only_after_exhaustion",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "가능한 해결 절차를 시도한 뒤에만 transfer한다",
+      "evidence_sources": [
+        "full trajectory"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "full trajectory"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "full trajectory"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.transfer_sequence",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "transfer tool 뒤에 지정된 transfer message를 보낸다",
+      "evidence_sources": [
+        "message order",
+        "tool"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.transfer_sequence.applicability.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.transfer_sequence.outcome.v1",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "trigger_tool": "transfer_to_human_agents",
+          "expected_followup_exact": "YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON."
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.upgrade_network_mode",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "허용된 4G/5G preference로 변경한다",
+      "evidence_sources": [
+        "action",
+        "device state"
+      ],
+      "assessment_route": "deterministic",
+      "applicability": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.upgrade_network_mode.applicability.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.upgrade_network_mode"
+        }
+      },
+      "outcome": {
+        "mode": "deterministic",
+        "procedure_id": "tau3.det.telecom.obligation.upgrade_network_mode.outcome.v1",
+        "required_evidence_sources": [
+          "action",
+          "device state"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the policy predicate is executable from structured trajectory/tool evidence",
+        "parameters": {
+          "predicate": "source-grounded structured predicate",
+          "clause_id": "telecom.obligation.upgrade_network_mode"
+        }
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.verify_paid_before_claim",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "bill status가 paid인지 확인한 뒤 결제 완료를 알린다",
+      "evidence_sources": [
+        "message order",
+        "tool"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "message order",
+          "tool"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    },
+    {
+      "clause_id": "telecom.obligation.wait_for_payment_acceptance",
+      "clause_type": "triggered_obligation",
+      "policy_applicability": "triggered",
+      "description": "user가 request를 accept한 뒤 make payment를 호출한다",
+      "evidence_sources": [
+        "tool sequence",
+        "user"
+      ],
+      "assessment_route": "llm_judge",
+      "applicability": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.applicability",
+        "required_evidence_sources": [
+          "tool sequence",
+          "user"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      },
+      "outcome": {
+        "mode": "llm_judge",
+        "procedure_id": "tau3-semantic-judge-v0.1.0.outcome",
+        "required_evidence_sources": [
+          "tool sequence",
+          "user"
+        ],
+        "missing_evidence_result": "unknown",
+        "rationale": "the decision requires semantic interpretation of dialogue, grounding, scope, or policy context",
+        "parameters": {}
+      }
+    }
+  ]
+}

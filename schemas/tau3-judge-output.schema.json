@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ses.local/schemas/tau3-judge-output.schema.json",
+  "title": "SES tau3 LLM Judge Structured Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "judge_protocol_version", "selection_id", "blind_run_id", "decisions"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "judge_protocol_version": {"const": "tau3-semantic-judge-v0.1.0"},
+    "selection_id": {"type": "string", "pattern": "^validity-[0-9]{3}$"},
+    "blind_run_id": {"type": "string", "pattern": "^tau3-blind-[0-9a-f]{16}$"},
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/decision"}
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "step", "quote"],
+      "properties": {
+        "source": {"type": "string", "enum": ["trajectory_step", "task_context"]},
+        "step": {"type": ["integer", "null"], "minimum": 0},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 800}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"source": {"const": "trajectory_step"}}, "required": ["source"]},
+          "then": {"properties": {"step": {"type": "integer", "minimum": 0}}},
+          "else": {"properties": {"step": {"type": "null"}}}
+        }
+      ]
+    },
+    "applicability_judgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "evidence", "reason"],
+      "properties": {
+        "value": {"type": "string", "enum": ["applicable", "not_applicable", "not_triggered", "unknown"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 2000}
+      }
+    },
+    "outcome_judgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "evidence", "reason"],
+      "properties": {
+        "value": {"type": "string", "enum": ["pass", "fail", "unknown"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 2000}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"value": {"enum": ["pass", "fail"]}}, "required": ["value"]},
+          "then": {"properties": {"evidence": {"minItems": 1}}}
+        }
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clause_id", "applicability", "outcome"],
+      "properties": {
+        "clause_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "applicability": {"oneOf": [{"$ref": "#/$defs/applicability_judgment"}, {"type": "null"}]},
+        "outcome": {"oneOf": [{"$ref": "#/$defs/outcome_judgment"}, {"type": "null"}]}
+      }
+    }
+  }
+}
